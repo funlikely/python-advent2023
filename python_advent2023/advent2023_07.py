@@ -94,9 +94,25 @@ def get_hand_type_score_with_jokers(cards):
             return 'four of a kind'
     elif j_count == 2:
         simple_hand_type = get_hand_type_score(cards)
+        if simple_hand_type in ['one pair']:
+            return 'three of a kind'
+        elif simple_hand_type in ['two pair']:
+            return 'four of a kind'
+        elif simple_hand_type in ['full house']:
+            return 'five of a kind'
 
     elif j_count == 1:
         simple_hand_type = get_hand_type_score(cards)
+        if simple_hand_type in ['high card']:
+            return 'one pair'
+        elif simple_hand_type in ['one pair']:
+            return 'three of a kind'
+        elif simple_hand_type in ['two pair']:
+            return 'full house'
+        elif simple_hand_type in ['three of a kind']:
+            return 'four of a kind'
+        elif simple_hand_type in ['four of a kind']:
+            return 'five of a kind'
     return 'high card'
 
 
@@ -140,7 +156,7 @@ def main():
     print(f"The Answer to Advent of Code 2023, 07, 2 is '{answer_2}'")
 
     # The Answer to Advent of Code 2023, 07, 1 is '245794640'
-    # The Answer to Advent of Code 2023, 07, 2 is
+    # The Answer to Advent of Code 2023, 07, 2 is '247899149'
 
 
 if __name__ == "__main__":
