@@ -56,7 +56,7 @@ def process_row_for_numbers(r):
     for i in range(len(r)):
         for k in replacements:
             if r[i:].startswith(k):
-                r = r[:i] + replacements[k] + r[(i + len(k)):]
+                r = r[:i] + replacements[k] + r[(i + 1):]
     return r
 
 
@@ -64,10 +64,11 @@ def get_answer_2():
     data = read_file('data/01.txt')
     total = 0
     for row in data:
+        original_row = row
         row = process_row_for_numbers(row)
         row = ''.join([a for a in row if a.isdigit()])
         num_to_add = int(row[0]) * 10 + int(row[-1])
-        print(f'Number to add: {num_to_add}')
+        print(f'Data: {original_row}, Number to add: {num_to_add}')
         total += num_to_add
 
     return total
@@ -84,6 +85,7 @@ def main():
 
     # The Answer to Advent of Code 2023, 01, 1 is '54630'
     # The Answer to Advent of Code 2023, 01, 2 is
+
 
 if __name__ == "__main__":
     main()
