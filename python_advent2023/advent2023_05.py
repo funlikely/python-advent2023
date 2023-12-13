@@ -74,12 +74,83 @@ def get_answer_1():
     return min_location
 
 
+def get_seeds_round_2(row):
+    some_seed_data = [int(s) for s in row.split(' ')[1:]]
+    seeds = [[some_seed_data[i * 2], some_seed_data[i * 2 + 1]] for i in range(int(len(some_seed_data) / 2))]
+    return seeds
+
+
+def run_through_map(destinations, mapum):
+    """
+    Possibilities
+        destinations = [a, b]
+        map_item_interval = [c, d]
+
+        if a < c, d < b
+            we get three intervals (map(a, c-1), map(c,d), map(d+1, b))
+        if c <= a, d < b
+            we get two intervals (map(a, d), map(d+1, b))
+        if a < c, b <= d
+            we get two intervals (map(a, c-1), map(c, b))
+        if c <= a, b <=d
+            we get one interval (map(a,b))
+        if d < c or a > d
+            we get one interval ((a,b))
+
+        Oh we'll want to process these maps so they don't have holes in them.
+
+        Data structure brainstorm.
+
+
+        soil-to-fertilizer map:
+        0 15 37  [[15, 51], [0, 36]]
+        37 52 2  [[52, 53], [37, 38]]
+        39 0 15  [[0, 14], [39, 43]]
+
+        [[[0, 14], [39, 43]], [[15, 51], [0, 36]], [[52, 53], [37, 38]], [[54, 1000], [54, 1000]]]
+
+
+    :param destinations:
+    :param mapum:
+    :return:
+    """
+    results = []
+    for interval in destinations:
+        for map_item in mapum:
+            source_range_min = map_item[1]
+            source_range_max = map_item[1] + map_item[2] - 1
+            if interval[0] >= source_range_min and interval[1] <= source_range_max:
+                results.append(
+                    [interval[0] - source_range_min + map_item[0], interval[1] - source_range_min + map_item[0]])
+            elif interval[0] <= source_range_min and source_range_min <= interval[1] <= source_range_max:
+                print('')
+    return results
+
+
+def process_seeds_and_maps_round_2(seeds, maps):
+    destinations = seeds
+    for mapum in maps:
+        destinations = run_through_map(destinations, mapum)
+    return destinations
+
+
 def get_answer_2():
     data = read_file('data/05.txt')
 
-    total = 0
+    seeds = get_seeds_round_2(data[0])
+    if debug2:
+        print(f'seed values: {seeds}')
 
-    return total
+    maps = get_maps(data[2:])
+    if debug2:
+        for map_item in maps:
+            print(f'map: {map_item}')
+
+    locations = process_seeds_and_maps_round_2(seeds, maps)
+
+    min_location = min(locations)
+
+    return min_location
 
 
 def main():
