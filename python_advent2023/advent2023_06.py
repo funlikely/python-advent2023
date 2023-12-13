@@ -29,9 +29,18 @@ def get_margin(race):
 
 
 def get_answer_2():
-    data = ['Time:        55     99     97     93', 'Distance:   401   1485   2274   1405']
+    time = 71530
+    distance = 940200
+    time = 55999793
+    distance = 401148522741405
 
-    return 0
+    i = 0;
+    your_distance =  i * (time - i)
+    while your_distance < distance:
+        i += 1
+        your_distance =  i * (time - i)
+
+    return time - 2 * i + 1
 
 
 def main():
@@ -43,8 +52,8 @@ def main():
     print(f"The Answer to Advent of Code 2023, 06, 1 is '{answer_1}'")
     print(f"The Answer to Advent of Code 2023, 06, 2 is '{answer_2}'")
 
-    # The Answer to Advent of Code 2023, 06, 1 is
-    # The Answer to Advent of Code 2023, 06, 2 is
+    # The Answer to Advent of Code 2023, 06, 1 is '2374848'
+    # The Answer to Advent of Code 2023, 06, 2 is '39132886'
 
 
 if __name__ == "__main__":
