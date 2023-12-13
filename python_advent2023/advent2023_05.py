@@ -76,13 +76,20 @@ def get_answer_1():
 
 def get_seeds_round_2(row):
     some_seed_data = [int(s) for s in row.split(' ')[1:]]
-    seeds = [[some_seed_data[i * 2], some_seed_data[i * 2 + 1]] for i in range(int(len(some_seed_data) / 2))]
+    seeds = [[some_seed_data[i * 2], some_seed_data[i * 2] + some_seed_data[i * 2 + 1] - 1] for i in range(int(len(some_seed_data) / 2))]
     return seeds
 
 
 def map_interval(interval: List[int], mapum: List[List[int]]) -> List[List[int]]:
-
-    return [0]
+    interval_min = interval[0]
+    interval_max = interval[1]
+    translated_map = [[[item[1], item[1]+item[2]-1], item[0] - item[1]] for item in mapum]
+    map_mins = [item[1] for item in mapum]
+    map_maxs = [item[1]+item[2]-1 for item in mapum]
+    map_shifts = [item[0] - item[1] for item in mapum]
+    relevant_map_items = [item for item in translated_map
+                          if interval_min <= item[0][0] <= interval_max or interval_min <= item[0][1] <= interval_max]
+    return [[0, 1]]
 
 
 def process_seeds_and_maps_round_2(intervals, maps):
@@ -100,7 +107,7 @@ def process_seeds_and_maps_round_2(intervals, maps):
 
 
 def get_answer_2():
-    data = read_file('data/05.txt')
+    data = read_file('data/05_test.txt')
 
     seeds = get_seeds_round_2(data[0])
     if debug2:
