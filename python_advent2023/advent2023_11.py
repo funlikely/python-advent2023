@@ -25,18 +25,31 @@ def print_stars(stars):
         print(f'{"".join(line)}')
 
 
+def get_horiz_expand_indices(data):
+    return [j for j in range(len(data)) if all([x == '.' for x in data[j]])]
+
+
+def get_vert_expand_indices(data):
+    return [i for i in range(len(data[0])) if all([data[j][i] == '.' for j in range(len(data))])]
+
+
+def expand_stars(data):
+    horiz_expand_indices = get_horiz_expand_indices(data)
+    vert_expand_indices = get_vert_expand_indices(data)
+    print(f'horiz expand indices: {horiz_expand_indices}, vert expand indices: {vert_expand_indices}')
+
+    new_stars= []
+    for j in range(data):
+        for i in range(data[0]):
+            print('hi there')
+    return new_stars
+
 def get_answer_1():
     data = read_file(data_file)
-    new_data = []
-    for j in range(len(data)):
-        new_data.append(list(data[j]))
-        if all([x == '.' for x in data[j]]):
-            new_data.append(list(data[j]))
-    for i in range(len(new_data[0])):
-        if all([new_data[b][i] == '.' for b in range(len(new_data))]):
-            for j in range(len(new_data)):
-                new_data[j] = new_data[j][:i] + ['.'] + new_data[j][i:]
-    print_stars(new_data)
+
+    stars = expand_stars(data)
+
+    print_stars(stars)
 
     return 0
 
