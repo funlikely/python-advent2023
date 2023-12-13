@@ -39,20 +39,34 @@ def get_number(row, j):
 
 
 def determine_if_part_number(data, i, j, number):
-    pass
+    allowed_chars = '0123456789.'
+    v_range_min = 0 if i == 0 else i - 1
+    v_range_max = len(data) if i == len(data) - 1 else i + 2
+    h_range_min = 0 if j == 0 else j - 1
+    h_range_max = len(data[i]) if j + len(number) == len(data[i]) else j + len(number) + 1
+    for x in range(h_range_min, h_range_max):
+        for y in range(v_range_min, v_range_max):
+            if data[y][x] not in allowed_chars:
+                return True
+    return False
 
 
 def get_answer_1():
     data = read_file('data/03.txt')
 
+    skip_digits = 0
+
     total = 0
     for i in range(len(data)):
         for j in range(len(data[i])):
-            if data[i][j].isdigit():
+            if data[i][j].isdigit() and (j == 0 or not data[i][j-1].isdigit()):
                 number = get_number(data[i], j)
                 is_part_number = determine_if_part_number(data, i, j, number)
                 if is_part_number:
-                    total += number
+                    print(f'Found part number: {number}')
+                    total += int(number)
+                else:
+                    print(f'Found non part number: {number}')
     return total
 
 
@@ -70,7 +84,7 @@ def main():
     print(f"The Answer to Advent of Code 2023, 03, 1 is '{answer_1}'")
     print(f"The Answer to Advent of Code 2023, 03, 2 is '{answer_2}'")
 
-    # The Answer to Advent of Code 2023, 03, 1 is
+    # The Answer to Advent of Code 2023, 03, 1 is '549908'
     # The Answer to Advent of Code 2023, 03, 2 is
 
 
