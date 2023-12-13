@@ -91,21 +91,21 @@ def get_answer_1():
 def get_dist2(coord1, coord2, horiz_expand_indices, vert_expand_indices):
     dist = abs(coord1[0] - coord2[0]) + abs(coord1[1] - coord2[1])
 
-    scale = 100
+    scale = 10
 
-    x1 = coord1[0]
-    x2 = coord2[0]
+    x1 = min(coord1[0], coord2[0])
+    x2 = max(coord1[0], coord2[0])
     y1 = coord1[1]
     y2 = coord2[1]
     dist += len([h for h in horiz_expand_indices if x1 < h < x2]) * scale
 
     dist += len([v for v in vert_expand_indices if y1 < v < y2]) * scale
 
-    return dist, [v for v in vert_expand_indices if x1 < v < x2], [h for h in horiz_expand_indices if y1 < h < y2]
+    return dist, [v for v in vert_expand_indices if y1 < v < y2], [h for h in horiz_expand_indices if x1 < h < x2]
 
 
 def is_ordered_stars(a, b):
-    return (a[0] - b[0]) * 10 ** 10 + (a[1] - b[1])
+    return (a[0] - b[0]) * 10 ** 10 + (a[1] - b[1]) < 0
 
 
 def get_answer_2():
