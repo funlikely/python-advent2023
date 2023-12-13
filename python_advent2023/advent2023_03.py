@@ -36,7 +36,16 @@ def read_file(file_path):
 
 def get_answer_1():
     data = read_file('data/03.txt')
-    return 0
+
+    total = 0
+    for i in range(len(data)):
+        for j in range(len(data[i])):
+            if data[i][j].isdigit():
+                number = get_number(data, i, j)
+                is_part_number = determine_if_part_number(data, i, j, number)
+                if is_part_number:
+                    total += number
+    return total
 
 
 def get_answer_2():
