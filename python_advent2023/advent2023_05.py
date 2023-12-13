@@ -89,23 +89,30 @@ def map_interval(interval: List[int], mapum: List[List[int]]) -> List[List[int]]
     map_shifts = [item[0] - item[1] for item in mapum]
     relevant_map_items = [item for item in translated_map
                           if interval_min <= item[0][0] <= interval_max or interval_min <= item[0][1] <= interval_max]
-    out_left_map_items = [item for item in translated_map if item[0][0] < interval_min <= item[0][1]]
-    out_right_map_items = [item for item in translated_map if item[0][0] <= interval_max < item[0][1]]
+    out_left_map_items = [item for item in translated_map if item[0][0] < interval_min <= item[0][1] <= interval_max]
+    out_right_map_items = [item for item in translated_map if interval_min <= item[0][0] <= interval_max < item[0][1]]
     inside_map_items = [item for item in translated_map
                         if interval_min <= item[0][0] <= interval_max and interval_min <= item[0][1] <= interval_max]
+    inside_map_items.sort()
     if len(out_left_map_items) > 1 or len(out_right_map_items) > 1:
         print(f'error, out left map items: {out_left_map_items}, out right map items: {out_right_map_items}')
     new_intervals = []
-    if not relevant_map_items:
-        new_intervals.append([interval_min, interval_max])
+
     if out_left_map_items:
         out_left_map_item = out_left_map_items[0]
         new_intervals.append([interval_min + out_left_map_item[1], out_left_map_item[0][1] + out_left_map_item[1]])
+        interval_min = out_left_map_item[0][1] + 1
     if out_right_map_items:
         out_right_map_item = out_right_map_items[0]
         new_intervals.append([out_right_map_item[0][0] + out_right_map_item[1], interval_max + out_right_map_item[1]])
+        interval_max = out_right_map_item[0][0] - 1
     for map_item in inside_map_items:
+        if interval_min != map_item[0][0]:
+            new_intervals.append([interval_min, map_item[0][0]])
         new_intervals.append([map_item[0][0] + map_item[1], map_item[0][1] + map_item[1]])
+        interval_min = map_item[0][1] + 1
+    if interval_min <= interval_max:
+        new_intervals.append([interval_min, interval_max])
 
     return new_intervals
 
@@ -138,7 +145,7 @@ def get_answer_2():
 
     locations = process_seeds_and_maps_round_2(seeds, maps)
 
-    min_location = min(locations)
+    min_location = min(locations)[0]
 
     return min_location
 
