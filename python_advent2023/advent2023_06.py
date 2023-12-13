@@ -12,19 +12,26 @@ debug1 = True
 debug2 = True
 
 
-
-
 def get_answer_1():
-    data = ['Time:        55     99     97     93','Distance:   401   1485   2274   1405']
+    data = ['Time:        55     99     97     93', 'Distance:   401   1485   2274   1405']
+    times = [int(k) for k in data[0].split(' ') if k.isnumeric()]
+    distances = [int(k) for k in data[1].split(' ') if k.isnumeric()]
+    races = [[times[i], distances[i]] for i in range(len(times))]
+    margin = 1
+    for race in races:
+        margin *= get_margin(race)
 
-    return 0
+    return margin
+
+
+def get_margin(race):
+    return len([k * (race[0] - k) for k in range(race[0] + 1) if k * (race[0] - k) > race[1]])
 
 
 def get_answer_2():
-    data = ['Time:        55     99     97     93','Distance:   401   1485   2274   1405']
+    data = ['Time:        55     99     97     93', 'Distance:   401   1485   2274   1405']
 
     return 0
-
 
 
 def main():
