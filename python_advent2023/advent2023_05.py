@@ -55,7 +55,7 @@ def get_locations_from_seed(seeds, maps):
 
 
 def get_answer_1():
-    data = read_file('data/05_test.txt')
+    data = read_file('data/05.txt')
 
     seeds = get_seeds(data[0])
     if debug1:
@@ -68,7 +68,7 @@ def get_answer_1():
 
     locations = get_locations_from_seed(seeds, maps)
 
-    min_location = min(locations, key=locations.get)
+    min_location = min(locations.values())  # min(locations, key=locations.get)
     if debug1:
         print(f'locations: {locations}')
     return min_location
@@ -91,7 +91,7 @@ def main():
     print(f"The Answer to Advent of Code 2023, 05, 1 is '{answer_1}'")
     print(f"The Answer to Advent of Code 2023, 05, 2 is '{answer_2}'")
 
-    # The Answer to Advent of Code 2023, 05, 1 is
+    # The Answer to Advent of Code 2023, 05, 1 is '462648396'
     # The Answer to Advent of Code 2023, 05, 2 is
 
 
