@@ -19,8 +19,25 @@ def read_file(file_path):
     return lines
 
 
+def get_seeds(line):
+    return [int(s) for s in line.split(' ')[1:]]
+
+
+def get_maps(map_data):
+    maps = []
+    for i in range(len(map_data)):
+        print(f'{i}')
+    return maps
+
+
 def get_answer_1():
     data = read_file('data/05.txt')
+
+    seeds = get_seeds(data[0])
+    if debug1:
+        print(f'seed values: {seeds}')
+
+    maps = get_maps(data[2:])
 
     total = 0
     return total
