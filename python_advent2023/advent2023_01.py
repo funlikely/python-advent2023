@@ -83,8 +83,8 @@ def main():
     print(f"The Answer to Advent of Code 2023, 01, 1 is '{answer_1}'")
     print(f"The Answer to Advent of Code 2023, 01, 2 is '{answer_2}'")
 
-    # The Answer to Advent of Code 2023, 01, 1 is '54630'
-    # The Answer to Advent of Code 2023, 01, 2 is
+    # The Answer to Advent of Code 2023, 02, 1 is '54630'
+    # The Answer to Advent of Code 2023, 02, 2 is '54770'
 
 
 if __name__ == "__main__":
