@@ -22,6 +22,8 @@ hand_types = {'five of a kind': 6, 'four of a kind': 5, 'full house': 4, 'three 
               'one pair': 1, 'high card': 0}
 card_ranks = {'A': 12, 'K': 11, 'Q': 10, 'J': 9, 'T': 8, '9': 7, '8': 6, '7': 5, '6': 4, '5': 3, '4': 2, '3': 1,
               '2': 0}
+card_ranks_j = {'A': 12, 'K': 11, 'Q': 10, 'T': 9, '9': 8, '8': 7, '7': 6, '6': 5, '5': 4, '4': 3, '3': 2,
+                '2': 1, 'J': 0}
 
 
 def get_hand_type_score(cards):
@@ -42,8 +44,8 @@ def get_hand_type_score(cards):
 
 
 def get_card_score(cards):
-    return (13**4) * card_ranks[cards[0]] + (13 ** 3) * card_ranks[cards[1]] + (13 ** 2) * card_ranks[cards[2]]\
-        + (13**1) * card_ranks[cards[3]] + card_ranks[cards[4]]
+    return (13 ** 4) * card_ranks[cards[0]] + (13 ** 3) * card_ranks[cards[1]] + (13 ** 2) * card_ranks[cards[2]] \
+        + (13 ** 1) * card_ranks[cards[3]] + card_ranks[cards[4]]
 
 
 def get_rank(cards):
@@ -70,17 +72,62 @@ def get_answer_1():
     winnings = 0
     for i in range(len(hands)):
         rank = hands[i]['rank']
-        amt = (i+1) * rank
+        amt = (i + 1) * rank
         cards = hands[i]['cards']
-        print(f'Hand {i+1}: {cards}, rank: {rank}, hand type: {get_hand_type_score(cards)} winnings amt: {amt}')
+        print(f'Hand {i + 1}: {cards}, rank: {rank}, hand type: {get_hand_type_score(cards)} winnings amt: {amt}')
         winnings += amt
 
     return winnings
 
 
+def get_hand_type_score_with_jokers(cards):
+    cards = ''.join(sorted(cards))
+    j_count = sum([1 for c in cards if c == 'J'])
+    if j_count == 0:
+        return get_hand_type_score(cards)
+    elif j_count >=4:
+        return 'five of a kind'
+    elif j_count == 3:
+        if len(set(cards)) == 2:
+            return 'five of a kind'
+        else:
+            return 'four of a kind'
+    elif j_count == 2:
+        simple_hand_type = get_hand_type_score(cards)
+
+    elif j_count == 1:
+        simple_hand_type = get_hand_type_score(cards)
+    return 'high card'
+
+
+def get_card_score_with_jokers(cards):
+    return (13 ** 4) * card_ranks_j[cards[0]] + (13 ** 3) * card_ranks_j[cards[1]] + (13 ** 2) * card_ranks_j[cards[2]] \
+        + (13 ** 1) * card_ranks_j[cards[3]] + card_ranks_j[cards[4]]
+
+
+def get_rank_with_jokers(cards):
+    return (10 ** 6) * hand_types[get_hand_type_score_with_jokers(cards)] + get_card_score_with_jokers(cards)
+
+
 def get_answer_2():
     data = read_file('data/07.txt')
-    return 0
+    hands = get_hands_from_data(data)
+    if debug1:
+        print(f'hands: {hands}')
+
+    hands.sort(key=lambda val: get_rank_with_jokers(val['cards']))
+    if debug1:
+        print(f'hands: {hands}')
+
+    winnings = 0
+    for i in range(len(hands)):
+        rank = hands[i]['rank']
+        amt = (i + 1) * rank
+        cards = hands[i]['cards']
+        print(f'Hand {i + 1}: {cards}, rank: {rank}, hand type: {get_hand_type_score(cards)} winnings amt: {amt}')
+        winnings += amt
+
+    return winnings
 
 
 def main():
