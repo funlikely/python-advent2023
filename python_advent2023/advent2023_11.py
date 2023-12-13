@@ -73,7 +73,8 @@ def get_answer_1():
 
     stars = expand_stars(data)
 
-    print_stars(stars)
+    if debug1:
+        print_stars(stars)
 
     star_coords = get_star_coords(stars)
 
@@ -81,7 +82,8 @@ def get_answer_1():
     for coord1 in star_coords:
         for coord2 in [s for s in star_coords if is_ordered_stars(coord1, s)]:
             distances.append(get_dist(coord1, coord2))
-            print(f'Distance between {coord1} and {coord2} = {get_dist(coord1, coord2)}')
+            if debug1:
+                print(f'Distance between {coord1} and {coord2} = {get_dist(coord1, coord2)}')
 
     return int(sum(distances) / 2)
 
@@ -91,15 +93,15 @@ def get_dist2(coord1, coord2, horiz_expand_indices, vert_expand_indices):
 
     scale = 100
 
-    y1 = min(coord1[1], coord2[1])
-    y2 = max(coord1[1], coord2[1])
-    dist += len([h for h in horiz_expand_indices if y1 < h < y2]) * scale
+    x1 = coord1[0]
+    x2 = coord2[0]
+    y1 = coord1[1]
+    y2 = coord2[1]
+    dist += len([h for h in horiz_expand_indices if x1 < h < x2]) * scale
 
-    x1 = min(coord1[0], coord2[0])
-    x2 = max(coord1[0], coord2[0])
-    dist += len([v for v in vert_expand_indices if x1 < v < x2]) * scale
+    dist += len([v for v in vert_expand_indices if y1 < v < y2]) * scale
 
-    return dist
+    return dist, [v for v in vert_expand_indices if x1 < v < x2], [h for h in horiz_expand_indices if y1 < h < y2]
 
 
 def is_ordered_stars(a, b):
@@ -110,8 +112,12 @@ def get_answer_2():
     data = read_file(data_file)
 
     stars = data
+    print_stars(stars)
+
     horiz_expand_indices = get_horiz_expand_indices(stars)
     vert_expand_indices = get_vert_expand_indices(stars)
+
+    print(f'horiz expand indices: {horiz_expand_indices}, vert expand indices: {vert_expand_indices}')
 
     # print_stars(stars)
 
@@ -120,7 +126,7 @@ def get_answer_2():
     distances = []
     for coord1 in star_coords:
         for coord2 in [s for s in star_coords if is_ordered_stars(coord1, s)]:
-            distances.append(get_dist2(coord1, coord2, horiz_expand_indices, vert_expand_indices))
+            distances.append(get_dist2(coord1, coord2, horiz_expand_indices, vert_expand_indices)[0])
             if debug2:
                 print(f'Distance between {coord1} and {coord2} = {get_dist2(coord1, coord2, horiz_expand_indices, vert_expand_indices)}')
 
