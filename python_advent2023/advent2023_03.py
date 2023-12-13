@@ -24,7 +24,9 @@
 import time
 import re
 
-debug = True
+debug1 = False
+
+debug2 = True
 
 
 def read_file(file_path):
@@ -54,8 +56,6 @@ def determine_if_part_number(data, i, j, number):
 def get_answer_1():
     data = read_file('data/03.txt')
 
-    skip_digits = 0
-
     total = 0
     for i in range(len(data)):
         for j in range(len(data[i])):
@@ -63,16 +63,79 @@ def get_answer_1():
                 number = get_number(data[i], j)
                 is_part_number = determine_if_part_number(data, i, j, number)
                 if is_part_number:
-                    print(f'Found part number: {number}')
+                    if debug1:
+                        print(f'Found part number: {number}')
                     total += int(number)
-                else:
+                elif debug1:
                     print(f'Found non part number: {number}')
     return total
 
 
+def get_gear_candidate_locations(data):
+    return [(x, y) for y in range(len(data)) for x in range(len(data[0])) if data[y][x] == '*']
+
+
+def get_number_data_from_row(row):
+    numbers = []
+    for i in range(len(row)):
+        if row[i].isdigit() and (i == 0 or not row[i-1].isdigit()):
+            number = get_number(row, i)
+            numbers.append([[i, i + len(number) - 1], number])
+    return numbers
+
+
+def get_high_part_numbers(data, g):
+    if g[1] == 0:
+        return []
+    row = data[g[1] - 1]
+    x = g[0]
+    number_data = get_number_data_from_row(row)
+    return [n[1] for n in number_data if n[0][0] - 1 <= x <= n[0][1] + 1]
+
+
+def get_low_part_numbers(data, g):
+    if g[1] == len(data) - 1:
+        return []
+    row = data[g[1] + 1]
+    x = g[0]
+    number_data = get_number_data_from_row(row)
+    return [n[1] for n in number_data if n[0][0] - 1 <= x <= n[0][1] + 1]
+
+
+def get_mid_part_numbers(data, g):
+    row = data[g[1]]
+    x = g[0]
+    number_data = get_number_data_from_row(row)
+    return [n[1] for n in number_data if n[0][0] - 1 <= x <= n[0][1] + 1]
+
+
+def get_gears_from_candidates(data, gear_candidate_locations):
+    gears = []
+    for g in gear_candidate_locations:
+        part_numbers = []
+        part_numbers += get_high_part_numbers(data, g)
+        part_numbers += get_low_part_numbers(data, g)
+        part_numbers += get_mid_part_numbers(data, g)
+        if debug2:
+            print(f'Gear candidate {g}, part number count: {len(part_numbers)}, part numbers: {part_numbers}')
+        if len(part_numbers) == 2:
+            gears.append(part_numbers)
+    return gears
+
+
+def get_gears(data):
+    gear_candidate_locations = get_gear_candidate_locations(data)
+    gears = get_gears_from_candidates(data, gear_candidate_locations)
+    if debug2:
+        print(f'Gear candidate locations: {gear_candidate_locations}')
+    return gears
+
+
 def get_answer_2():
     data = read_file('data/03.txt')
-    return 0
+    gears = get_gears(data)
+    answer = sum([int(g[0]) * int(g[1]) for g in gears])
+    return answer
 
 
 def main():
@@ -85,7 +148,7 @@ def main():
     print(f"The Answer to Advent of Code 2023, 03, 2 is '{answer_2}'")
 
     # The Answer to Advent of Code 2023, 03, 1 is '549908'
-    # The Answer to Advent of Code 2023, 03, 2 is
+    # The Answer to Advent of Code 2023, 03, 2 is '81166799'
 
 
 if __name__ == "__main__":
