@@ -39,16 +39,31 @@ def read_file(file_path):
     return lines
 
 
+def get_winner_numbers(line):
+    winners = [int(s) for s in line[line.index(':')+1 : line.index('|')].strip(' ').split(' ') if s != '']
+    return winners
+
+
+def get_guessed_numbers(line):
+    return [int(s) for s in line[line.index('|')+1 :].strip(' ').split(' ') if s != '']
+
 def get_answer_1():
-    data = read_file('data/03.txt')
+    data = read_file('data/04.txt')
 
     total = 0
 
+    for line in data:
+        winners = get_winner_numbers(line)
+        guessers = get_guessed_numbers(line)
+        corrects = len(set(winners).intersection(set(guessers)))
+        points = 2 ** (corrects - 1) if corrects > 0 else 0
+        print(f'winners: {winners}, guessers: {guessers}, corrects: {corrects}, points = {points}')
+        total += points
     return total
 
 
 def get_answer_2():
-    data = read_file('data/03.txt')
+    data = read_file('data/04.txt')
     answer = 0
     return answer
 
