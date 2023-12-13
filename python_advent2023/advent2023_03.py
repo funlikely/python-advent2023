@@ -34,6 +34,14 @@ def read_file(file_path):
     return lines
 
 
+def get_number(row, j):
+    return re.findall(r'\b\d+\b', row[j:])[0]
+
+
+def determine_if_part_number(data, i, j, number):
+    pass
+
+
 def get_answer_1():
     data = read_file('data/03.txt')
 
@@ -41,7 +49,7 @@ def get_answer_1():
     for i in range(len(data)):
         for j in range(len(data[i])):
             if data[i][j].isdigit():
-                number = get_number(data, i, j)
+                number = get_number(data[i], j)
                 is_part_number = determine_if_part_number(data, i, j, number)
                 if is_part_number:
                     total += number
