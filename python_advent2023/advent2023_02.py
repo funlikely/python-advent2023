@@ -42,7 +42,25 @@ def get_answer_1():
 
 def get_answer_2():
     data = read_file('data/02.txt')
-    return 0
+    total = 0
+    for line in data:
+        numbers = re.findall(r'\b\d+\b', line)
+        game_num = int(numbers[0])
+
+        red = 0
+        green = 0
+        blue = 0
+        split_line = line.split(' ')[2:]
+        for j in range(0, len(split_line), 2):
+            if split_line[j + 1].startswith('red'):
+                red = max(int(split_line[j]), red)
+            if split_line[j + 1].startswith('green'):
+                green = max(int(split_line[j]), green)
+            if split_line[j + 1].startswith('blue'):
+                blue = max(int(split_line[j]), blue)
+        total += red * green * blue
+
+    return total
 
 
 def main():
@@ -54,8 +72,8 @@ def main():
     print(f"The Answer to Advent of Code 2023, 02, 1 is '{answer_1}'")
     print(f"The Answer to Advent of Code 2023, 02, 2 is '{answer_2}'")
 
-    # The Answer to Advent of Code 2023, 02, 1 is
-    # The Answer to Advent of Code 2023, 02, 2 is
+    # The Answer to Advent of Code 2023, 02, 1 is '2283'
+    # The Answer to Advent of Code 2023, 02, 2 is '78669'
 
 
 if __name__ == "__main__":
