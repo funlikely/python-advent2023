@@ -30,7 +30,7 @@ directions = {'-': [{'y': 0,  'x': -1}, {'y': 0, 'x': 1}],
 
 data_file = 'data/10.txt'
 
-swapout = {'L': '╙', 'F': '╓', 'J': '╜', '7': '╖', '-': '─', '|': '║'}
+swapout = {'L': '╙', 'F': '╓', 'J': '╜', '7': '╖', '-': '─', '|': '║', 'S': '╙'}
 
 def get_picture(data, path):
     picture = []
@@ -155,8 +155,7 @@ def main():
     print(f"The Answer to Advent of Code 2023, 10, 2 is '{answer_2}'")
 
     # The Answer to Advent of Code 2023, 10, 1 is '6812'
-    # The Answer to Advent of Code 2023, 10, 2 is
-    # '543' IS TOO HIGH, apparently.
+    # The Answer to Advent of Code 2023, 10, 2 is '527'
 
 
 if __name__ == "__main__":
