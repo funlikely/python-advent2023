@@ -10,7 +10,7 @@ debug1 = False
 
 debug2 = True
 
-data_file = 'data/11_test.txt'
+data_file = 'data/11.txt'
 
 
 def read_file(file_path):
@@ -39,10 +39,34 @@ def expand_stars(data):
     print(f'horiz expand indices: {horiz_expand_indices}, vert expand indices: {vert_expand_indices}')
 
     new_stars= []
-    for j in range(data):
-        for i in range(data[0]):
-            print('hi there')
+    for j in range(len(data)):
+        new_line = []
+        if j in horiz_expand_indices:
+            for i in range(len(data[0]) + len(vert_expand_indices)):
+                new_line.append('.')
+            new_stars.append(new_line)
+            new_line = []
+            for i in range(len(data[0]) + len(vert_expand_indices)):
+                new_line.append('.')
+            new_stars.append(new_line)
+        else:
+            for i in range(len(data[0])):
+                if i in vert_expand_indices:
+                    new_line.append('.')
+                    new_line.append('.')
+                else:
+                    new_line.append(data[j][i])
+            new_stars.append(new_line)
     return new_stars
+
+
+def get_star_coords(stars):
+    return [(y, x) for y in range(len(stars)) for x in range(len(stars[0])) if stars[y][x] == '#']
+
+
+def get_dist(coord1, coord2):
+    return abs(coord1[0] - coord2[0]) + abs(coord1[1] - coord2[1])
+
 
 def get_answer_1():
     data = read_file(data_file)
@@ -51,7 +75,15 @@ def get_answer_1():
 
     print_stars(stars)
 
-    return 0
+    star_coords = get_star_coords(stars)
+
+    distances = []
+    for coord1 in star_coords:
+        for coord2 in [s for s in star_coords if s != coord1]:
+            distances.append(get_dist(coord1, coord2))
+            print(f'Distance between {coord1} and {coord2} = {get_dist(coord1, coord2)}')
+
+    return int(sum(distances) / 2)
 
 
 def get_answer_2():
@@ -68,7 +100,7 @@ def main():
     print(f"The Answer to Advent of Code 2023, 11, 1 is '{answer_1}'")
     print(f"The Answer to Advent of Code 2023, 11, 2 is '{answer_2}'")
 
-    # The Answer to Advent of Code 2023, 11, 1 is
+    # The Answer to Advent of Code 2023, 11, 1 is '9521550'
     # The Answer to Advent of Code 2023, 11, 2 is
 
 
