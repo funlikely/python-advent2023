@@ -5,10 +5,9 @@
 
 """
 import time
-import re
-from typing import Dict, List
+from typing import List
 
-debug1 = True
+debug1 = False
 
 debug2 = True
 
@@ -87,6 +86,11 @@ def map_interval(interval: List[int], mapum: List[List[int]]) -> List[List[int]]
     map_mins = [item[1] for item in mapum]
     map_maxs = [item[1]+item[2]-1 for item in mapum]
     map_shifts = [item[0] - item[1] for item in mapum]
+
+    encompassing_map_items = [item for item in translated_map if item[0][0] <= interval_min and interval_max <= item[0][1]]
+    if any(encompassing_map_items):
+        return [[interval_min + encompassing_map_items[0][1], interval_max + encompassing_map_items[0][1]]]
+
     relevant_map_items = [item for item in translated_map
                           if interval_min <= item[0][0] <= interval_max or interval_min <= item[0][1] <= interval_max]
     out_left_map_items = [item for item in translated_map if item[0][0] < interval_min <= item[0][1] <= interval_max]
@@ -132,7 +136,7 @@ def process_seeds_and_maps_round_2(intervals, maps):
 
 
 def get_answer_2():
-    data = read_file('data/05_test.txt')
+    data = read_file('data/05.txt')
 
     seeds = get_seeds_round_2(data[0])
     if debug2:
@@ -160,7 +164,7 @@ def main():
     print(f"The Answer to Advent of Code 2023, 05, 2 is '{answer_2}'")
 
     # The Answer to Advent of Code 2023, 05, 1 is '462648396'
-    # The Answer to Advent of Code 2023, 05, 2 is
+    # The Answer to Advent of Code 2023, 05, 2 is '2520479'
 
 
 if __name__ == "__main__":
