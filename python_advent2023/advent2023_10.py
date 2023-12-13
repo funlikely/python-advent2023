@@ -18,10 +18,42 @@ def read_file(file_path):
     return lines
 
 
+directions = {'-': [{'y': 0,  'x': -1}, {'y': 0, 'x': 1}],
+              '|': [{'y': -1, 'x': 0},  {'y': 1, 'x': 0}],
+              'L': [{'y': -1,  'x': 0}, {'y': 0, 'x': 1}],
+              'J': [{'y': 0,  'x': -1}, {'y': -1, 'x': 0}],
+              'F': [{'y': 1, 'x': 0},   {'y': 0, 'x': 1}],
+              '7': [{'y': 1, 'x': 0},   {'y': 0, 'x': -1}],
+              'S': [{'y': 1, 'x': 0},   {'y': 0, 'x': 1}]}  # special for now, since it acts as an 'F'
+              #'S': [{'y': -1,  'x': 0}, {'y': 0, 'x': 1}]}  # special for now, since it acts as an 'L'
+
+
 def get_answer_1():
     data = read_file('data/10.txt')
-    total = 0
-    return total
+    distance = 0
+
+    y, x = [(j, i) for j in range(len(data)) for i in range(len(data[0])) if data[j][i] == 'S'][0]
+
+    path = [(y, x)]
+    print(f'loc: ({y},{x}), data(loc): {data[y][x]}')
+
+    while len(path) < 10 or data[y][x] != 'S':
+        choices = directions[data[y][x]]
+        adjacencies = [(y + choice['y'], x + choice['x']) for choice in choices]
+        next_nodes = [n for n in adjacencies if n not in path]
+        if not next_nodes:
+            break
+        y, x = next_node = next_nodes[0]
+        path.append(next_node)
+        if len(path) % 1000 == 0:
+            print(f'Path length so far: {len(path)}')
+        # print(f'path: {path}')
+    picture = [[' ']*len(data[0])] * len(data)
+    for node in path:
+        picture[node[0]][node[1]] = '*'
+    for line in picture:
+        print(''.join(line))
+    return int(len(path) / 2)
 
 
 def get_answer_2():
