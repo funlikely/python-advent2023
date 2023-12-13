@@ -36,7 +36,7 @@ def get_answer_1():
 
 
 def get_answer_2():
-    data = read_file('data/09_test.txt')
+    data = read_file('data/09.txt')
     oasis = [[int(s) for s in line.split(' ')] for line in data]
     total = 0
     for line in oasis:
@@ -46,8 +46,13 @@ def get_answer_2():
             next_line = [current_line[i+1]-current_line[i] for i in range(len(current_line)-1)]
             inferer.append(next_line)
             current_line = next_line
-        print(f'inferer: {inferer}')
-        total += sum([x[-1] for x in inferer])
+        # print(f'inferer: {inferer}')
+        for i in range(len(inferer)-1, -1, -1):
+            print(f'{i}')
+            differ = inferer[i][0]
+            inferer[i-1] = [inferer[i-1][0]-differ] + inferer[i-1]
+        print(f'backwards inferer: {inferer}')
+        total += inferer[0][0]
     return total
 
 
@@ -61,7 +66,7 @@ def main():
     print(f"The Answer to Advent of Code 2023, 09, 2 is '{answer_2}'")
 
     # The Answer to Advent of Code 2023, 09, 1 is '1861775706'
-    # The Answer to Advent of Code 2023, 09, 2 is
+    # The Answer to Advent of Code 2023, 09, 2 is '1082'
 
 
 if __name__ == "__main__":
