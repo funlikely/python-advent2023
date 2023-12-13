@@ -10,7 +10,7 @@ debug1 = False
 
 debug2 = True
 
-data_file = 'data/11.txt'
+data_file = 'data/11_test.txt'
 
 
 def read_file(file_path):
@@ -79,16 +79,52 @@ def get_answer_1():
 
     distances = []
     for coord1 in star_coords:
-        for coord2 in [s for s in star_coords if s != coord1]:
+        for coord2 in [s for s in star_coords if is_ordered_stars(coord1, s)]:
             distances.append(get_dist(coord1, coord2))
             print(f'Distance between {coord1} and {coord2} = {get_dist(coord1, coord2)}')
 
     return int(sum(distances) / 2)
 
 
+def get_dist2(coord1, coord2, horiz_expand_indices, vert_expand_indices):
+    dist = abs(coord1[0] - coord2[0]) + abs(coord1[1] - coord2[1])
+
+    scale = 100
+
+    y1 = min(coord1[1], coord2[1])
+    y2 = max(coord1[1], coord2[1])
+    dist += len([h for h in horiz_expand_indices if y1 < h < y2]) * scale
+
+    x1 = min(coord1[0], coord2[0])
+    x2 = max(coord1[0], coord2[0])
+    dist += len([v for v in vert_expand_indices if x1 < v < x2]) * scale
+
+    return dist
+
+
+def is_ordered_stars(a, b):
+    return (a[0] - b[0]) * 10 ** 10 + (a[1] - b[1])
+
+
 def get_answer_2():
     data = read_file(data_file)
-    return 0
+
+    stars = data
+    horiz_expand_indices = get_horiz_expand_indices(stars)
+    vert_expand_indices = get_vert_expand_indices(stars)
+
+    # print_stars(stars)
+
+    star_coords = get_star_coords(stars)
+
+    distances = []
+    for coord1 in star_coords:
+        for coord2 in [s for s in star_coords if is_ordered_stars(coord1, s)]:
+            distances.append(get_dist2(coord1, coord2, horiz_expand_indices, vert_expand_indices))
+            if debug2:
+                print(f'Distance between {coord1} and {coord2} = {get_dist2(coord1, coord2, horiz_expand_indices, vert_expand_indices)}')
+
+    return sum(distances)
 
 
 def main():
