@@ -30,10 +30,10 @@ def get_hand_type_score(cards):
         return 'five of a kind'
     if cards[0] == cards[3] or cards[1] == cards[4]:
         return 'four of a kind'
-    if cards[0] == cards[2] or cards[1] == cards[3] or cards[2] == cards[4]:
-        return 'three of a kind'
     if len(set(cards)) == 2:
         return 'full house'
+    if cards[0] == cards[2] or cards[1] == cards[3] or cards[2] == cards[4]:
+        return 'three of a kind'
     if len(set(cards)) == 3:
         return 'two pair'
     if len(set(cards)) == 4:
@@ -71,8 +71,8 @@ def get_answer_1():
     for i in range(len(hands)):
         rank = hands[i]['rank']
         amt = (i+1) * rank
-        hand = hands[i]['cards']
-        print(f'Hand {i+1}: {hand}, rank: {rank}, winnings amt: {amt}')
+        cards = hands[i]['cards']
+        print(f'Hand {i+1}: {cards}, rank: {rank}, hand type: {get_hand_type_score(cards)} winnings amt: {amt}')
         winnings += amt
 
     return winnings
@@ -92,8 +92,7 @@ def main():
     print(f"The Answer to Advent of Code 2023, 07, 1 is '{answer_1}'")
     print(f"The Answer to Advent of Code 2023, 07, 2 is '{answer_2}'")
 
-    # The Answer to Advent of Code 2023, 07, 1 is not '245782026' ; too low.
-    # The Answer to Advent of Code 2023, 07, 1 is
+    # The Answer to Advent of Code 2023, 07, 1 is '245794640'
     # The Answer to Advent of Code 2023, 07, 2 is
 
 
