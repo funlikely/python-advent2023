@@ -10,7 +10,7 @@ debug1 = False
 
 debug2 = True
 
-data_file = 'data/11.txt'
+data_file = 'data/11_test.txt'
 
 
 def read_file(file_path):
@@ -20,8 +20,24 @@ def read_file(file_path):
     return lines
 
 
+def print_stars(stars):
+    for line in stars:
+        print(f'{"".join(line)}')
+
+
 def get_answer_1():
     data = read_file(data_file)
+    new_data = []
+    for j in range(len(data)):
+        new_data.append(list(data[j]))
+        if all([x == '.' for x in data[j]]):
+            new_data.append(list(data[j]))
+    for i in range(len(new_data[0])):
+        if all([new_data[b][i] == '.' for b in range(len(new_data))]):
+            for j in range(len(new_data)):
+                new_data[j] = new_data[j][:i] + ['.'] + new_data[j][i:]
+    print_stars(new_data)
+
     return 0
 
 
