@@ -6,7 +6,7 @@
 """
 import time
 import re
-from typing import Dict
+from typing import Dict, List
 
 debug1 = True
 
@@ -80,58 +80,23 @@ def get_seeds_round_2(row):
     return seeds
 
 
-def run_through_map(destinations, mapum):
-    """
-    Possibilities
-        destinations = [a, b]
-        map_item_interval = [c, d]
+def map_interval(interval: List[int], mapum: List[List[int]]) -> List[List[int]]:
 
-        if a < c, d < b
-            we get three intervals (map(a, c-1), map(c,d), map(d+1, b))
-        if c <= a, d < b
-            we get two intervals (map(a, d), map(d+1, b))
-        if a < c, b <= d
-            we get two intervals (map(a, c-1), map(c, b))
-        if c <= a, b <=d
-            we get one interval (map(a,b))
-        if d < c or a > d
-            we get one interval ((a,b))
-
-        Oh we'll want to process these maps so they don't have holes in them.
-
-        Data structure brainstorm.
+    return [0]
 
 
-        soil-to-fertilizer map:
-        0 15 37  [[15, 51], [0, 36]]
-        37 52 2  [[52, 53], [37, 38]]
-        39 0 15  [[0, 14], [39, 43]]
+def process_seeds_and_maps_round_2(intervals, maps):
+    if len(maps) == 0:
+        return intervals
+    mapum = maps[0]
 
-        [[[0, 14], [39, 43]], [[15, 51], [0, 36]], [[52, 53], [37, 38]], [[54, 1000], [54, 1000]]]
+    # process intervals through mapum
+    new_intervals = []
 
+    for interval in intervals:
+        new_intervals += map_interval(interval, mapum)
 
-    :param destinations:
-    :param mapum:
-    :return:
-    """
-    results = []
-    for interval in destinations:
-        for map_item in mapum:
-            source_range_min = map_item[1]
-            source_range_max = map_item[1] + map_item[2] - 1
-            if interval[0] >= source_range_min and interval[1] <= source_range_max:
-                results.append(
-                    [interval[0] - source_range_min + map_item[0], interval[1] - source_range_min + map_item[0]])
-            elif interval[0] <= source_range_min and source_range_min <= interval[1] <= source_range_max:
-                print('')
-    return results
-
-
-def process_seeds_and_maps_round_2(seeds, maps):
-    destinations = seeds
-    for mapum in maps:
-        destinations = run_through_map(destinations, mapum)
-    return destinations
+    return process_seeds_and_maps_round_2(new_intervals, maps[1:])
 
 
 def get_answer_2():
