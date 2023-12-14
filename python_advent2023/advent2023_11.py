@@ -85,13 +85,16 @@ def get_answer_1():
             if debug1:
                 print(f'Distance between {coord1} and {coord2} = {get_dist(coord1, coord2)}')
 
-    return int(sum(distances) / 2)
+    return sum(distances)
 
 
 def get_dist2(coord1, coord2, horiz_expand_indices, vert_expand_indices):
     dist = abs(coord1[0] - coord2[0]) + abs(coord1[1] - coord2[1])
 
-    scale = 10
+    if data_file == 'data/11_test.txt':
+        scale = 10
+    else:
+        scale = 10 ** 6
 
     x1 = min(coord1[0], coord2[0])
     x2 = max(coord1[0], coord2[0])
@@ -112,12 +115,14 @@ def get_answer_2():
     data = read_file(data_file)
 
     stars = data
-    print_stars(stars)
+    if debug2:
+        print_stars(stars)
 
     horiz_expand_indices = get_horiz_expand_indices(stars)
     vert_expand_indices = get_vert_expand_indices(stars)
 
-    print(f'horiz expand indices: {horiz_expand_indices}, vert expand indices: {vert_expand_indices}')
+    if debug2:
+        print(f'horiz expand indices: {horiz_expand_indices}, vert expand indices: {vert_expand_indices}')
 
     # print_stars(stars)
 
