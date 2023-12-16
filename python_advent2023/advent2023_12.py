@@ -70,9 +70,9 @@ def get_combinations(slots, damaged):
 def fits_one_spring(line, a, b):
     if a < 0 or b < 0 or a > len(line) or b > len(line) or b < a:
         raise ValueError(f'Bad values for a={a} or b={b} for line of length {len(line)}')
-    if any([x != '.' for x in range(len(line)) if x < a or x > b]):
+    if any([line[x] == '#' for x in range(len(line)) if x < a or x > b]):
         return False
-    if any([x == '.' for x in range(len(line)) if a < x < b]):
+    if any([line[x] == '.' for x in range(len(line)) if a <= x <= b]):
         return False
     return True
 
