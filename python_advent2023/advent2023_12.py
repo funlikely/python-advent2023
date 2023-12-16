@@ -81,8 +81,9 @@ def get_combinations_simple(line, damaged):
     if len(damaged) == 0:
         return 0
     elif len(damaged) == 1:
-        return len([(a, b) for b in range(a+1, len(line)) for a in range(len(line) - 1) if fits_one_spring(line, a, b)])
-    pass
+        return len([(a, b) for a in range(len(line) - 1) for b in range(a+1, len(line)) if fits_one_spring(line, a, b)])
+    else:
+        return 123
 
 
 def get_answer_1():
