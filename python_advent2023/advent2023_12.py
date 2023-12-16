@@ -67,6 +67,22 @@ def get_combinations(slots, damaged):
     return 0
 
 
+def fits_one_spring(line, a, b):
+    if any([x != '.' for x in range(len(line)) if x < a or x > b]):
+        return False
+    if any([x == '.' for x in range(len(line)) if a < x < b]):
+        return False
+    return True
+
+
+def get_combinations_simple(line, damaged):
+    if len(damaged) == 0:
+        return 0
+    elif len(damaged) == 1:
+        return len([(a, b) for b in range(a+1, len(line)) for a in range(len(line) - 1) if fits_one_spring(line, a, b)])
+    pass
+
+
 def get_answer_1():
     data = read_file(data_file)
     slots_collection = get_slots(data)
@@ -74,8 +90,8 @@ def get_answer_1():
     if debug1:
         print(f'slots: {slots_collection}, damaged groups: {damaged_collection}')
 
-    combos = [get_combinations(slots_collection[i], damaged_collection[i]) for i in range(len(slots_collection))]
-
+    # combos = [get_combinations(slots_collection[i], damaged_collection[i]) for i in range(len(slots_collection))]
+    combos = [get_combinations_simple(data[i].split(" ")[0], damaged_collection[i]) for i in range(len(slots_collection))]
     return sum(combos)
 
 
