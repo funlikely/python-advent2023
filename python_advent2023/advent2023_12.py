@@ -83,7 +83,15 @@ def get_combinations_simple(line, damaged):
     elif len(damaged) == 1:
         return len([(a, b) for a in range(len(line) - 1) for b in range(a+1, len(line)) if fits_one_spring(line, a, b)])
     else:
-        return 123
+        required_size = sum(damaged) + len(damaged) - 1
+        if len(line) < required_size:
+            return 0
+        else:
+            if fits_one_spring(line[:(damaged[0])], 0, damaged[0] - 1):
+                return get_combinations_simple(line[(damaged[0] + 1):], damaged[1:]) + get_combinations_simple(line[1:], damaged)
+            else:
+                return get_combinations_simple(line[1:], damaged)
+
 
 
 def get_answer_1():
