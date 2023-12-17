@@ -82,7 +82,7 @@ def get_combinations_simple(line, damaged):
         return 0
     elif len(damaged) == 1:
         return len(
-            [(a, a + damaged[0] - 1) for a in range(len(line) - damaged[0]) if fits_one_spring(line, a, a + damaged[0] - 1)])
+            [(a, a + damaged[0] - 1) for a in range(len(line) - damaged[0] + 1) if fits_one_spring(line, a, a + damaged[0] - 1)])
     else:
         required_size = sum(damaged) + len(damaged) - 1
         if len(line) < required_size:
