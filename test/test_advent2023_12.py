@@ -1,10 +1,15 @@
 from unittest import TestCase
 from advent2023_12 import *
 
+from python_advent2023.advent2023_12 import *
+
 
 class Test(TestCase):
 
-    def test_get_combinations_simple(self):
+    def test_get_combinations_simple_examples(self):
+        self.assertEquals(get_combinations_simple('.??.', [1]), 2)
+
+    def test_get_combinations_simple_from_problem_itself(self):
         self.assertEquals(get_combinations_simple('???.###', [1, 1, 3]), 1)
         self.assertEquals(get_combinations_simple('.??..??...?##.', [1, 1, 3]), 4)
         self.assertEquals(get_combinations_simple('?#?#?#?#?#?#?#?', [1, 3, 1, 6]), 1)
