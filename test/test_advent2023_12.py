@@ -8,6 +8,18 @@ class Test(TestCase):
 
     def test_get_combinations_simple_examples(self):
         self.assertEquals(get_combinations_simple('.??.', [1]), 2)
+        self.assertEquals(get_combinations_simple('.???.', [2]), 2)
+        self.assertEquals(get_combinations_simple('.??#.', [2]), 1)
+
+    def test_get_combinations_simple_examples_2(self):
+        self.assertEquals(get_combinations_simple('.?????#?.', [2]), 2)
+        self.assertEquals(get_combinations_simple('.??#??#?.', [2]), 0)
+        self.assertEquals(get_combinations_simple('.??#??#?.', [3]), 0)
+        self.assertEquals(get_combinations_simple('.??#??#?.', [4]), 1)
+        self.assertEquals(get_combinations_simple('.??#??#?.', [5]), 2)
+        self.assertEquals(get_combinations_simple('.??#??#?.', [6]), 2)
+        self.assertEquals(get_combinations_simple('.??#??#?.', [7]), 1)
+        self.assertEquals(get_combinations_simple('.??#??#?.', [8]), 0)
 
     def test_get_combinations_simple_from_problem_itself(self):
         self.assertEquals(get_combinations_simple('???.###', [1, 1, 3]), 1)

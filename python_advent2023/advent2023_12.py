@@ -82,13 +82,13 @@ def get_combinations_simple(line, damaged):
         return 0
     elif len(damaged) == 1:
         return len(
-            [(a, a + len(damaged) - 1) for a in range(len(line) - len(damaged)) if fits_one_spring(line, a, a + len(damaged) - 1)])
+            [(a, a + damaged[0] - 1) for a in range(len(line) - damaged[0]) if fits_one_spring(line, a, a + damaged[0] - 1)])
     else:
         required_size = sum(damaged) + len(damaged) - 1
         if len(line) < required_size:
             return 0
         else:
-            if fits_one_spring(line[:(damaged[0])], 0, damaged[0] - 1):
+            if fits_one_spring(line[:(damaged[0])], 0, damaged[0] - 1) and line[damaged[0]] != '#':
                 return get_combinations_simple(line[(damaged[0] + 1):], damaged[1:]) + get_combinations_simple(line[1:],
                                                                                                                damaged)
             else:
