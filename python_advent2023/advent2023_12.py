@@ -10,7 +10,7 @@ debug1 = True
 
 debug2 = True
 
-data_file = 'data/12_test.txt'
+data_file = 'data/12.txt'
 
 
 def read_file(file_path):
@@ -82,12 +82,18 @@ def get_combinations_simple(line, damaged):
         return 0
     elif len(damaged) == 1:
         return len(
-            [(a, a + damaged[0] - 1) for a in range(len(line) - damaged[0] + 1) if fits_one_spring(line, a, a + damaged[0] - 1)])
+            [(a, a + damaged[0] - 1) for a in range(len(line) - damaged[0] + 1) if
+             fits_one_spring(line, a, a + damaged[0] - 1)])
     else:
         required_size = sum(damaged) + len(damaged) - 1
         if len(line) < required_size:
             return 0
         else:
+            if fits_one_spring(line[:(damaged[0])], 0, damaged[0] - 1) and line[damaged[0]] == '#' and line[0] == '#':
+                """ this is the case of '##.#', [1,1], which should have 0 solutions """
+                # spring_to_go_to = min([i for i, e in enumerate(line) if e != '#' and i > damaged[0]])
+                # return get_combinations_simple(line[(spring_to_go_to + 1):], damaged)
+                return 0
             if fits_one_spring(line[:(damaged[0])], 0, damaged[0] - 1) and line[damaged[0]] != '#' and line[0] == '#':
                 return get_combinations_simple(line[(damaged[0] + 1):], damaged[1:])
             if fits_one_spring(line[:(damaged[0])], 0, damaged[0] - 1) and line[damaged[0]] != '#':
@@ -95,6 +101,13 @@ def get_combinations_simple(line, damaged):
                                                                                                                damaged)
             else:
                 return get_combinations_simple(line[1:], damaged)
+
+
+def get_combinations_simple_proxy(param, param1):
+    result = get_combinations_simple(param, param1)
+    if debug2:
+        print(f'get_combinations_simple({param}, {param1}) = {result}')
+    return result
 
 
 def get_answer_1():
@@ -105,8 +118,8 @@ def get_answer_1():
         print(f'slots: {slots_collection}, damaged groups: {damaged_collection}')
 
     # combos = [get_combinations(slots_collection[i], damaged_collection[i]) for i in range(len(slots_collection))]
-    combos = [get_combinations_simple(data[i].split(" ")[0], damaged_collection[i]) for i in
-              range(len(slots_collection))]
+    combos = [get_combinations_simple_proxy(data[i].split(" ")[0], damaged_collection[i]) for i in
+              range(len(data))]
     return sum(combos)
 
 
@@ -126,6 +139,8 @@ def main():
     print(f"The Answer to Advent of Code 2023, 12, 2 is '{answer_2}'")
 
     # The Answer to Advent of Code 2023, 12, 1 is
+    #                                             not 7676, too high
+    #                                             not 7638, too high
     # The Answer to Advent of Code 2023, 12, 2 is
 
 

@@ -29,6 +29,61 @@ class Test(TestCase):
         self.assertEquals(get_combinations_simple('????.######..#####.', [1, 6, 5]), 4)
         self.assertEquals(get_combinations_simple('?###????????', [3, 2, 1]), 10)
 
+    def test_get_combinations_simple_hard_case_1(self):
+        """
+        Use .???????#????.
+            .#?##?#?##???.
+            .#?##???#?##?.
+            .#?##???#??##.
+            .#??##??#?##?.
+            .#??##??#??##.
+            .#???##?#?##?.
+            .#???##?#??##.
+            .?#?##??#?##?.
+            .?#?##??#??##.
+            .?#??##?#?##?.
+            .?#??##?#??##.
+            .??#?##?#?##?.
+            .??#?##?#??##.
+        :return:
+        """
+        self.assertEquals(get_combinations_simple('.???????#????.', [1, 2, 1, 2]), 13)
+
+    def test_get_combinations_simple_hard_cases_2(self):
+        self.assertEquals(get_combinations_simple('?#??#??????????.??.?', [7, 2, 3, 1]), 12)
+        self.assertEquals(get_combinations_simple('.##???.??????', [2, 1, 2]), 16)
+
+    def test_get_combinations_simple_hard_cases_3(self):
+        self.assertEquals(get_combinations_simple('???????', [5, 2]), 0)
+        self.assertEquals(get_combinations_simple('????????', [5, 2]), 1)
+        self.assertEquals(get_combinations_simple('?????????', [5, 2]), 3)
+        self.assertEquals(get_combinations_simple('??????????', [5, 2]), 6)
+        self.assertEquals(get_combinations_simple('??????????', [1, 5, 2]), 1)
+        self.assertEquals(get_combinations_simple('???.??????????', [5, 2]), 6)
+        self.assertEquals(get_combinations_simple('???.??????????', [1, 5, 2]), 19)
+
+    def test_get_combinations_simple_hard_cases_4(self):
+        self.assertEquals(get_combinations_simple('####????#?', [4, 1, 1]), 2)
+        self.assertEquals(get_combinations_simple('?####???#?', [4, 1, 1]), 1)
+        self.assertEquals(get_combinations_simple('???#????#?', [4, 1, 1]), 3)
+
+    def test_get_combinations_simple_hard_cases_5(self):
+        # looks like it should just be '1'
+        # self.assertEquals(get_combinations_simple('?#????#?#?.?#????', [1, 2, 2, 3]), 2)
+        self.assertEquals(get_combinations_simple('##.#', [1, 1]), 0)
+        self.assertEquals(get_combinations_simple('###.#', [1, 1]), 0)
+        self.assertEquals(get_combinations_simple('######.###', [2, 3]), 0)
+        self.assertEquals(get_combinations_simple('?######?.?###??', [2, 3]), 0)
+        self.assertEquals(get_combinations_simple('##???######?.?###????', [2, 2, 3]), 0)
+        self.assertEquals(get_combinations_simple('##.???', [1, 1]), 0)
+        self.assertEquals(get_combinations_simple('#.##.???', [1, 1, 1]), 0)
+        self.assertEquals(get_combinations_simple('##???######?.?#??????', [2, 2, 3]), 0)
+        self.assertEquals(get_combinations_simple('?#????######?.?#????', [2, 2, 3]), 0)
+        self.assertEquals(get_combinations_simple('??.??######?.?#????#?', [2, 2, 1]), 0)
+        self.assertEquals(get_combinations_simple('??.###.??', [1, 1, 1]), 0)
+
+        self.assertEquals(get_combinations_simple('?#????###?.?#????', [1, 2, 2, 3]), 0)
+
     def test_fits_one_spring_fails_on_dot_locations(self):
         self.assertEquals(fits_one_spring('..###??', 1, 2), False)
         self.assertEquals(fits_one_spring('..###??', 1, 3), False)
