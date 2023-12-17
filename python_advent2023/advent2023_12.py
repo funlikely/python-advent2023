@@ -88,6 +88,8 @@ def get_combinations_simple(line, damaged):
         if len(line) < required_size:
             return 0
         else:
+            if fits_one_spring(line[:(damaged[0])], 0, damaged[0] - 1) and line[damaged[0]] != '#' and line[0] == '#':
+                return get_combinations_simple(line[(damaged[0] + 1):], damaged[1:])
             if fits_one_spring(line[:(damaged[0])], 0, damaged[0] - 1) and line[damaged[0]] != '#':
                 return get_combinations_simple(line[(damaged[0] + 1):], damaged[1:]) + get_combinations_simple(line[1:],
                                                                                                                damaged)
