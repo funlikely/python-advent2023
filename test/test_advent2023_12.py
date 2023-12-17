@@ -68,8 +68,10 @@ class Test(TestCase):
         self.assertEquals(get_combinations_simple('???#????#?', [4, 1, 1]), 3)
 
     def test_get_combinations_simple_hard_cases_5(self):
-        # looks like it should just be '1'
-        # self.assertEquals(get_combinations_simple('?#????#?#?.?#????', [1, 2, 2, 3]), 2)
+        # from the puzzle input
+        self.assertEquals(get_combinations_simple('?#????#?#?.?#????', [1, 2, 2, 3]), 2)
+
+        # A lot of 'related' zeroes to test
         self.assertEquals(get_combinations_simple('##.#', [1, 1]), 0)
         self.assertEquals(get_combinations_simple('###.#', [1, 1]), 0)
         self.assertEquals(get_combinations_simple('######.###', [2, 3]), 0)
@@ -83,6 +85,18 @@ class Test(TestCase):
         self.assertEquals(get_combinations_simple('??.###.??', [1, 1, 1]), 0)
 
         self.assertEquals(get_combinations_simple('?#????###?.?#????', [1, 2, 2, 3]), 0)
+
+    def test_get_combinations_simple_some_zero_cases(self):
+        self.assertEquals(get_combinations_simple('??????#?#???????', [1]), 0)
+        self.assertEquals(get_combinations_simple('??#???#??#???', [1, 1]), 0)
+        self.assertEquals(get_combinations_simple('??#?#?#?#????', [1, 1, 2, 1, 1]), 0)
+        self.assertEquals(get_combinations_simple('??.??#?#?#?#????.??', [1, 1, 2, 1, 1]), 0)
+        self.assertEquals(get_combinations_simple('???.??##???', [1, 1, 2, 1, 1]), 0)
+        self.assertEquals(get_combinations_simple('???.??##???##??', [1, 1, 2, 1, 1]), 0)
+
+    def test_get_combinations_simple_puzzle_input_cases(self):
+        # sort of up to line 24 from the puzzle input now . . .
+        # self.assertEquals(get_combinations_simple('??????#?#???????', [1]), 0)
 
     def test_fits_one_spring_fails_on_dot_locations(self):
         self.assertEquals(fits_one_spring('..###??', 1, 2), False)
