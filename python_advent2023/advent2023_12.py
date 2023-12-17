@@ -43,7 +43,7 @@ def get_combinations(slots, damaged):
             if g < len(slots):
                 if all([x == '?' for x in slots]):
                     return len(slots) - g + 1  # the whole slot is wildcards
-                damaged_spots = [i for i,e in enumerate(slots) if e == '#']
+                damaged_spots = [i for i, e in enumerate(slots) if e == '#']
                 required_damaged_span = max(damaged_spots) - min(damaged_spots) + 1
                 if required_damaged_span > g:
                     raise ValueError(f'error in get_combinations({slots}, {damaged}')
@@ -81,17 +81,18 @@ def get_combinations_simple(line, damaged):
     if len(damaged) == 0:
         return 0
     elif len(damaged) == 1:
-        return len([(a, b) for a in range(len(line) - 1) for b in range(a+1, len(line)) if fits_one_spring(line, a, b)])
+        return len(
+            [(a, a + len(damaged) - 1) for a in range(len(line) - len(damaged)) if fits_one_spring(line, a, a + len(damaged) - 1)])
     else:
         required_size = sum(damaged) + len(damaged) - 1
         if len(line) < required_size:
             return 0
         else:
             if fits_one_spring(line[:(damaged[0])], 0, damaged[0] - 1):
-                return get_combinations_simple(line[(damaged[0] + 1):], damaged[1:]) + get_combinations_simple(line[1:], damaged)
+                return get_combinations_simple(line[(damaged[0] + 1):], damaged[1:]) + get_combinations_simple(line[1:],
+                                                                                                               damaged)
             else:
                 return get_combinations_simple(line[1:], damaged)
-
 
 
 def get_answer_1():
@@ -102,7 +103,8 @@ def get_answer_1():
         print(f'slots: {slots_collection}, damaged groups: {damaged_collection}')
 
     # combos = [get_combinations(slots_collection[i], damaged_collection[i]) for i in range(len(slots_collection))]
-    combos = [get_combinations_simple(data[i].split(" ")[0], damaged_collection[i]) for i in range(len(slots_collection))]
+    combos = [get_combinations_simple(data[i].split(" ")[0], damaged_collection[i]) for i in
+              range(len(slots_collection))]
     return sum(combos)
 
 
