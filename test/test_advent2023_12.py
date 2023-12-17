@@ -4,12 +4,13 @@ from advent2023_12 import *
 
 class Test(TestCase):
 
-    def test_get_combinations(self):
-        """
-        todo: implement
-        :return:
-        """
-        self.assertEquals(1, 1)
+    def test_get_combinations_simple(self):
+        self.assertEquals(get_combinations_simple('???.###', [1, 1, 3]), 1)
+        self.assertEquals(get_combinations_simple('.??..??...?##.', [1, 1, 3]), 4)
+        self.assertEquals(get_combinations_simple('?#?#?#?#?#?#?#?', [1, 3, 1, 6]), 1)
+        self.assertEquals(get_combinations_simple('????.#...#...', [4, 1, 1]), 1)
+        self.assertEquals(get_combinations_simple('????.######..#####.', [1, 6, 5]), 4)
+        self.assertEquals(get_combinations_simple('?###????????', [3, 2, 1]), 10)
 
     def test_fits_one_spring_fails_on_dot_locations(self):
         self.assertEquals(fits_one_spring('..###??', 1, 2), False)
