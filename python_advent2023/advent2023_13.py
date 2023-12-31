@@ -27,22 +27,25 @@ def read_file(file_path):
 
 
 def get_images(data):
-    blank_lines = [0] + [k for k in range(len(data)) if data[k] == ''] + [len(data) + 1]
-    images = [data[blank_lines[i]:blank_lines[i + 1]] for i in range(len(blank_lines) - 1)]
+    blank_lines = [-1] + [k for k in range(len(data)) if data[k] == ''] + [len(data) + 1]
+    images = [data[(blank_lines[i] + 1):blank_lines[i + 1]] for i in range(len(blank_lines) - 1)]
     return images
 
 
 def image_is_reflecting_i_lines_above_mirror(image, i):
+    if i < 1 or i > len(image) - 1:
+        raise ValueError(f"there can't be {i} rows reflected in an image with {len(image)} rows")
     j = 0
-    while i-j-1 > 0 and i+j < len(image)-1:
-        if image[i-j-1] != image[i+j]:
+    while i - j > 0 and i + j < len(image):
+        if image[i - j - 1] != image[i + j]:
             return False
         j += 1
     return True
 
 
 def transpose_image(image):
-    return image
+    transposed_image = [''.join([image[k][i] for k in range(len(image))]) for i in range(len(image[0]))]
+    return transposed_image
 
 
 def get_image_note_value(image):
@@ -54,6 +57,7 @@ def get_image_note_value(image):
     for i in range(1, len(transposed_image)):
         if image_is_reflecting_i_lines_above_mirror(transposed_image, i):
             return i
+    raise ValueError(f'Didn\'t find reflection in {image}')
 
 
 def get_answer_1():
@@ -88,8 +92,8 @@ def main():
     print(f"The Answer to Advent of Code 2023, 13, 1 is '{answer_1}'")
     print(f"The Answer to Advent of Code 2023, 13, 2 is '{answer_2}'")
 
-    # The Answer to Advent of Code 2023, 12, 1 13
-    # The Answer to Advent of Code 2023, 12, 2 13
+    # The Answer to Advent of Code 2023, 12, 1 is '37381'
+    # The Answer to Advent of Code 2023, 12, 2 is
 
 
 if __name__ == "__main__":
