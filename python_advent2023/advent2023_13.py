@@ -27,10 +27,33 @@ def read_file(file_path):
 
 
 def get_images(data):
-    images = []
     blank_lines = [0] + [k for k in range(len(data)) if data[k] == ''] + [len(data) + 1]
     images = [data[blank_lines[i]:blank_lines[i + 1]] for i in range(len(blank_lines) - 1)]
     return images
+
+
+def image_is_reflecting_i_lines_above_mirror(image, i):
+    j = 0
+    while i-j-1 > 0 and i+j < len(image)-1:
+        if image[i-j-1] != image[i+j]:
+            return False
+        j += 1
+    return True
+
+
+def transpose_image(image):
+    return image
+
+
+def get_image_note_value(image):
+    for i in range(1, len(image)):
+        if image_is_reflecting_i_lines_above_mirror(image, i):
+            return i * 100
+    else:
+        transposed_image = transpose_image(image)
+    for i in range(1, len(transposed_image)):
+        if image_is_reflecting_i_lines_above_mirror(transposed_image, i):
+            return i
 
 
 def get_answer_1():
@@ -41,7 +64,13 @@ def get_answer_1():
         for image in images:
             print(f'image: {image}')
 
-    return 0
+    result = 0
+    for image in images:
+        if len(image) < 3 or len(image[0]) < 3:
+            raise ValueError("You have a too narrow image that you didn't expect!!")
+        result += get_image_note_value(image)
+
+    return result
 
 
 def get_answer_2():
