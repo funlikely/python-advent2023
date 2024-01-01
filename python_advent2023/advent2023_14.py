@@ -196,8 +196,10 @@ def get_answer_2():
             print(f'Shift N/W/W/E:')
             print_data()
         current_state = get_state()
-        if current_state in states.keys():
-            print(f'found an equilibrium at iteration {i}')
+        if current_state in states.values():
+            for key, value in states.items():
+                if current_state == value:
+                    print(f'found an equilibrium at iteration {i}, it is a repeat of iteration {key}')
             break
         states[i] = current_state
         if i % 10 == 0:
