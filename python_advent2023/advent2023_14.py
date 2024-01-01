@@ -11,7 +11,16 @@ debug1 = True
 
 debug2 = True
 
-data_file = 'data/14.txt'
+data_file = 'data/14_test.txt'
+data = []
+
+
+def width():
+    return len(data[0])
+
+
+def height():
+    return len(data)
 
 
 def read_file(file_path):
@@ -52,28 +61,136 @@ def load_of_column(column):
 
 
 def get_answer_1():
+    global data
+
     data = read_file(data_file)
     result = 0
 
-    for i in range(len(data[0])):
-        column_i = ''.join([data[j][i] for j in range(len(data))])
+    for i in range(width()):
+        column_i = ''.join([data[j][i] for j in range(height())])
         result += load_of_column(column_i)
     return result
 
 
+def find_rock_to_shift_north(col_i, row_a):
+    row_y = row_a
+    while row_y < height():
+        if data[row_y][col_i] == 'O':
+            return row_y
+        elif data[row_y][col_i] == '#':
+            return None
+        row_y += 1
+    return None
+
+
+def shift_rocks_north():
+    for i in range(width()):
+        for a in range(height()):
+            if data[a][i] == '.':
+                b = find_rock_to_shift_north(i, a)
+                if b:
+                    data[a][i] = 'O'
+                    data[b][i] = '.'
+
+
+def find_rock_to_shift_east(row_j, col_b):
+    col_x = col_b
+    while col_x > -1:
+        if data[row_j][col_x] == '0':
+            return col_x
+        elif data[row_j][col_x] == '#':
+            return None
+        col_x -= 1
+    return None
+
+
+def shift_rocks_east():
+    for j in range(height()):
+        for b in range(width() - 1, -1, -1):
+            if data[j][b] == '.':
+                a = find_rock_to_shift_east(j, b)
+                if a:
+                    data[j][b] = '0'
+                    data[j][a] = '.'
+
+
+def find_rock_to_shift_west(row_j, col_b):
+    col_x = col_b
+    while col_x > -1:
+        if data[row_j][col_x] == '0':
+            return col_x
+        elif data[row_j][col_x] == '#':
+            return None
+        col_x -= 1
+    return None
+
+
+def shift_rocks_west():
+    for j in range(height()):
+        for b in range(width()):
+            if data[j][b] == '.':
+                a = find_rock_to_shift_east(j, b)
+                if a:
+                    data[j][b] = '0'
+                    data[j][a] = '.'
+
+
+def find_rock_to_shift_south(col_i, row_a):
+    row_y = row_a
+    while row_y > -1:
+        if data[row_y][col_i] == 'O':
+            return row_y
+        elif data[row_y][col_i] == '#':
+            return None
+        row_y -= 1
+    return None
+
+
+def shift_rocks_south():
+    for i in range(width()):
+        for a in range(height() - 1, -1, -1):
+            if data[a][i] == '.':
+                b = find_rock_to_shift_south(i, a)
+                if b:
+                    data[a][i] = 'O'
+                    data[b][i] = '.'
+
+
+def print_data():
+    for j in range(height()):
+        print(''.join(data[j]))
+    print()
+
+
 def get_answer_2():
+    global data
     data = read_file(data_file)
+    for j in range(height()):
+        data[j] = [char for char in data[j]]
 
     result = 0
+
+    for i in range(1):
+        shift_rocks_north()
+        print_data()
+        shift_rocks_west()
+        print_data()
+        shift_rocks_south()
+        print_data()
+        shift_rocks_east()
+        print_data()
+
     return result
 
 
 def main():
     start = time.time()
     answer_1 = get_answer_1()
+    answer_1_time = time.time()
     answer_2 = get_answer_2()
-    end = time.time()
-    print(f"time taken: {end - start}")
+    answer_2_time = time.time()
+    print(f"time taken for problem 1: {answer_1_time - start}")
+    print(f"time taken for problem 2: {answer_2_time - answer_1_time}")
     print(f"The Answer to Advent of Code 2023, 14, 1 is '{answer_1}'")
     print(f"The Answer to Advent of Code 2023, 14, 2 is '{answer_2}'")
 
