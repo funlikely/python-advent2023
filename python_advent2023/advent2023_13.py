@@ -86,17 +86,16 @@ def smudged_image_is_reflecting_i_lines_above_mirror(image, i):
     if i < 1 or i > len(image) - 1:
         raise ValueError(f"there can't be {i} rows reflected in an image with {len(image)} rows")
     j = 0
-    smudged = False
+    smudges = 0
     while i - j > 0 and i + j < len(image):
         row1 = image[i - j - 1]
         row2 = image[i + j]
         if rows_are_equal_except_for_smudge(row1, row2):
-            if smudged:
-                return False
-            else:
-                smudged = True
+            smudges += 1
+        elif row1 != row2:
+            return False
         j += 1
-    return True
+    return smudges == 1
 
 
 def get_smudged_image_note_value(image):
@@ -133,7 +132,7 @@ def main():
     print(f"The Answer to Advent of Code 2023, 13, 2 is '{answer_2}'")
 
     # The Answer to Advent of Code 2023, 12, 1 is '37381'
-    # The Answer to Advent of Code 2023, 12, 2 is
+    # The Answer to Advent of Code 2023, 12, 2 is '28210'
 
 
 if __name__ == "__main__":
