@@ -22,11 +22,19 @@ def read_file(file_path):
     return lines
 
 
+def run_hash_function(step):
+    acc = 0
+    for c in step:
+        acc += ord(c)
+        acc *= 17
+        acc %= 256
+    return acc
+
+
 def get_answer_1():
     data = read_file(data_file)
-    result = 0
-
-    return result
+    steps = data[0].strip().split(',')
+    return sum([run_hash_function(step) for step in steps])
 
 
 def get_answer_2():
@@ -45,7 +53,7 @@ def main():
     print(f"The Answer to Advent of Code 2023, 15, 1 is '{answer_1}'")
     print(f"The Answer to Advent of Code 2023, 15, 2 is '{answer_2}'")
 
-    # The Answer to Advent of Code 2023, 15, 1 is
+    # The Answer to Advent of Code 2023, 15, 1 is is '511416'
     # The Answer to Advent of Code 2023, 15, 2 is
 
 
