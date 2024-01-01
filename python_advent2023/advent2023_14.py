@@ -64,8 +64,12 @@ def get_answer_1():
     global data
 
     data = read_file(data_file)
-    result = 0
 
+    return get_load()
+
+
+def get_load():
+    result = 0
     for i in range(width()):
         column_i = ''.join([data[j][i] for j in range(height())])
         result += load_of_column(column_i)
@@ -170,10 +174,6 @@ def get_state():
     return state
 
 
-def get_load():
-    return 0
-
-
 def get_answer_2():
     global data
     data = read_file(data_file)
@@ -204,6 +204,8 @@ def get_answer_2():
         states[i] = current_state
         if i % 10 == 0:
             print(f'iteration: {i}')
+        if i == 160:
+            return get_load()
         i += 1
     return get_load()
 
@@ -221,6 +223,9 @@ def main():
 
     # The Answer to Advent of Code 2023, 14, 1 is '113525'
     # The Answer to Advent of Code 2023, 14, 2 is
+    #                                              not 109449, too high
+    # found an equilibrium at iteration 178, it is a repeat of iteration 94
+    # (10 ** 9 - 94) % 84 + 94 = 160, so 160 iteration is the one we want
 
 
 if __name__ == "__main__":
