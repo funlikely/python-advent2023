@@ -11,7 +11,7 @@ debug1 = True
 
 debug2 = True
 
-data_file = 'data/14_test.txt'
+data_file = 'data/14.txt'
 data = []
 
 
@@ -47,7 +47,7 @@ def shift_column_north(column):
     for a in range(len(shifted_column)):
         if shifted_column[a] == '.':
             b = find_rock_to_shift(shifted_column, a)
-            if b:
+            if b is not None:
                 shifted_column[a] = 'O'
                 shifted_column[b] = '.'
     shifted_column = ''.join(shifted_column)
@@ -88,7 +88,7 @@ def shift_rocks_north():
         for a in range(height()):
             if data[a][i] == '.':
                 b = find_rock_to_shift_north(i, a)
-                if b:
+                if b is not None:
                     data[a][i] = 'O'
                     data[b][i] = '.'
 
@@ -96,7 +96,7 @@ def shift_rocks_north():
 def find_rock_to_shift_east(row_j, col_b):
     col_x = col_b
     while col_x > -1:
-        if data[row_j][col_x] == '0':
+        if data[row_j][col_x] == 'O':
             return col_x
         elif data[row_j][col_x] == '#':
             return None
@@ -109,19 +109,19 @@ def shift_rocks_east():
         for b in range(width() - 1, -1, -1):
             if data[j][b] == '.':
                 a = find_rock_to_shift_east(j, b)
-                if a:
-                    data[j][b] = '0'
+                if a is not None:
+                    data[j][b] = 'O'
                     data[j][a] = '.'
 
 
 def find_rock_to_shift_west(row_j, col_b):
     col_x = col_b
-    while col_x > -1:
-        if data[row_j][col_x] == '0':
+    while col_x < width():
+        if data[row_j][col_x] == 'O':
             return col_x
         elif data[row_j][col_x] == '#':
             return None
-        col_x -= 1
+        col_x += 1
     return None
 
 
@@ -129,9 +129,9 @@ def shift_rocks_west():
     for j in range(height()):
         for b in range(width()):
             if data[j][b] == '.':
-                a = find_rock_to_shift_east(j, b)
-                if a:
-                    data[j][b] = '0'
+                a = find_rock_to_shift_west(j, b)
+                if a is not None:
+                    data[j][b] = 'O'
                     data[j][a] = '.'
 
 
@@ -151,7 +151,7 @@ def shift_rocks_south():
         for a in range(height() - 1, -1, -1):
             if data[a][i] == '.':
                 b = find_rock_to_shift_south(i, a)
-                if b:
+                if b is not None:
                     data[a][i] = 'O'
                     data[b][i] = '.'
 
@@ -162,6 +162,18 @@ def print_data():
     print()
 
 
+def get_state():
+    state = ''
+    for j in range(height()):
+        row = ''.join([char for char in data[j]])
+        state += row
+    return state
+
+
+def get_load():
+    return 0
+
+
 def get_answer_2():
     global data
     data = read_file(data_file)
@@ -170,17 +182,28 @@ def get_answer_2():
 
     result = 0
 
-    for i in range(1):
+    print(f'Original state:')
+    print_data()
+    previous_state = get_state()
+    i = 1
+    states = {}
+    while True:
         shift_rocks_north()
-        print_data()
         shift_rocks_west()
-        print_data()
         shift_rocks_south()
-        print_data()
         shift_rocks_east()
-        print_data()
-
-    return result
+        if debug1 and False:
+            print(f'Shift N/W/W/E:')
+            print_data()
+        current_state = get_state()
+        if current_state in states.keys():
+            print(f'found an equilibrium at iteration {i}')
+            break
+        states[i] = current_state
+        if i % 10 == 0:
+            print(f'iteration: {i}')
+        i += 1
+    return get_load()
 
 
 def main():
