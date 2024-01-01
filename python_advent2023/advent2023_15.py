@@ -11,7 +11,7 @@ debug1 = True
 
 debug2 = True
 
-data_file = 'data/15.txt'
+data_file = 'data/15_test.txt'
 data = []
 
 
@@ -37,8 +37,19 @@ def get_answer_1():
     return sum([run_hash_function(step) for step in steps])
 
 
+def get_code(step):
+    if '-' in step:
+        return {'label': step[:-1], 'box': run_hash_function(step[:-1]), 'action': 'remove'}
+    else:
+        return {'label': step.split('=')[0], 'box': run_hash_function(step.split('=')[0]), 'action': 'add', 'lens':step.split('=')[1]}
+
+
 def get_answer_2():
     data = read_file(data_file)
+    steps = data[0].strip().split(',')
+    codes = [get_code(step) for step in steps]
+    for step in steps:
+        print(f'step: {step}, code: {get_code(step)}')
     return 0
 
 
