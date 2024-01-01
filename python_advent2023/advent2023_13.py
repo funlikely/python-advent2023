@@ -77,10 +77,50 @@ def get_answer_1():
     return result
 
 
+def rows_are_equal_except_for_smudge(row1, row2):
+    unequal_indices = [i for i in range(len(row1)) if row1[i] != row2[i]]
+    return len(unequal_indices) == 1
+
+
+def smudged_image_is_reflecting_i_lines_above_mirror(image, i):
+    if i < 1 or i > len(image) - 1:
+        raise ValueError(f"there can't be {i} rows reflected in an image with {len(image)} rows")
+    j = 0
+    smudged = False
+    while i - j > 0 and i + j < len(image):
+        row1 = image[i - j - 1]
+        row2 = image[i + j]
+        if rows_are_equal_except_for_smudge(row1, row2):
+            if smudged:
+                return False
+            else:
+                smudged = True
+        j += 1
+    return True
+
+
+def get_smudged_image_note_value(image):
+    for i in range(1, len(image)):
+        if smudged_image_is_reflecting_i_lines_above_mirror(image, i):
+            return i * 100
+    else:
+        transposed_image = transpose_image(image)
+    for i in range(1, len(transposed_image)):
+        if smudged_image_is_reflecting_i_lines_above_mirror(transposed_image, i):
+            return i
+    raise ValueError(f'Didn\'t find reflection in {image}')
+
+
 def get_answer_2():
     data = read_file(data_file)
+    images = get_images(data)
 
-    return 0
+    result = 0
+    for image in images:
+        if len(image) < 3 or len(image[0]) < 3:
+            raise ValueError("You have a too narrow image that you didn't expect!!")
+        result += get_smudged_image_note_value(image)
+    return result
 
 
 def main():
